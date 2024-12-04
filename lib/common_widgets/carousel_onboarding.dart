@@ -1,4 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class CarouselOnboarding extends StatefulWidget {
   const CarouselOnboarding({super.key});
@@ -8,7 +10,6 @@ class CarouselOnboarding extends StatefulWidget {
 }
 
 class _CarouselOnboardingState extends State<CarouselOnboarding> {
-  final PageController _pageController = PageController(viewportFraction: 0.2);
   int currentIndex = 0;
 
   final List<String> carouselList = [
@@ -23,37 +24,32 @@ class _CarouselOnboardingState extends State<CarouselOnboarding> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 125,
-          width: double.infinity,
-          child: PageView.builder(
-            itemCount: carouselList.length,
-            controller: _pageController,
-            onPageChanged: (value) {
-              setState(() {
-                currentIndex = value;
-              });
-            },
-            itemBuilder: (context, index) {
-              double scale = 1.0;
-
-              if (_pageController.position.haveDimensions) {
-                double value = _pageController.page! - index;
-                scale = (1 - (value.abs() * 0.2)).clamp(0.8, 1.0);
-              }
-
-              return Transform.scale(
-                scale: scale,
-                child: Image.asset(
+        CarouselSlider(
+            items: List.generate(
+              carouselList.length,
+              (index) {
+                return Image.asset(
                   carouselList[index],
                   fit: BoxFit.cover,
-                  height: 105,
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 115),
+                  height: 160,
+                  width: 160,
+                );
+              },
+            ),
+            options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                viewportFraction: 0.3,
+                autoPlay: true,
+                enableInfiniteScroll: true,
+                enlargeFactor: 0.3,
+                aspectRatio: 1,
+                enlargeCenterPage: true,
+                height: 160)),
+        const Gap(116),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(carouselList.length, (index) {
@@ -65,7 +61,7 @@ class _CarouselOnboardingState extends State<CarouselOnboarding> {
                   color: currentIndex == index
                       ? const Color.fromRGBO(255, 191, 53, 1)
                       : const Color.fromARGB(255, 124, 97, 16),
-                  borderRadius: BorderRadius.circular(50)),
+                  borderRadius: BorderRadius.circular(4)),
             );
           }),
         ),
