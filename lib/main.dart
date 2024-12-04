@@ -4,7 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:habit_hive/router/go_router.dart';
 import 'package:habit_hive/screens/user_auth_screen/bloc/user_auth_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   runApp(const MyApp());
 }
 

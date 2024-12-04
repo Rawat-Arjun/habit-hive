@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habit_hive/constants/gradient_bg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:habit_hive/common_widgets/gradient_scaffold.dart';
+import 'package:habit_hive/common_widgets/gradient_text.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -28,169 +31,215 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GradientBg(
+    return GradientScaffold(
       child: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Center(
-              child: RichText(
-                text: TextSpan(
-                  text: 'Welcome to',
-                  style: const TextStyle(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to ',
+                  style: GoogleFonts.acme(
+                    fontWeight: FontWeight.w400,
                     fontSize: 30,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
                   ),
-                  children: [
-                    TextSpan(
-                      text: ' HABITHIVE',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.amber[400],
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
+                GradientText(
+                    text: 'HABITHIVE',
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color.fromRGBO(255, 174, 0, 1),
+                        Color.fromRGBO(255, 255, 255, 1),
+                      ],
+                    ),
+                    style: GoogleFonts.acme(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 30,
+                    ))
+              ],
             ),
+            const SizedBox(height: 26),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text(
+                Text(
                   'Log in',
-                  style: TextStyle(
-                    fontSize: 40,
+                  style: GoogleFonts.almarai(
+                    fontSize: 32,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(
-                  height: 300,
+                  height: 184,
+                  width: 193,
                   child: Image.network(
-                      'https://as2.ftcdn.net/v2/jpg/02/05/35/45/1000_F_205354526_8Y8E2VbxvFJccm8T91qLKofTEIDbxgdv.jpg'),
+                    'assets/auth_pic.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ],
             ),
+            const SizedBox(height: 5),
             Container(
+              height: 332,
+              width: 376,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 171, 137, 36),
-                borderRadius: BorderRadius.circular(12),
+                color: const Color.fromRGBO(255, 174, 0, 0.3),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.fromLTRB(9, 16, 11, 13),
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextFormField(
                       controller: usernameController,
                       decoration: InputDecoration(
                         hintText: 'Username',
+                        prefixIcon: const Icon(Icons.person_2_outlined),
+                        hintStyle: GoogleFonts.almarai(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
                         fillColor: Colors.white,
                         filled: true,
-                        prefixIcon: const Icon(Icons.person_2_outlined),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 14),
                     TextFormField(
                       controller: passwordController,
+                      obscureText: true,
                       decoration: InputDecoration(
-                        hintText: '..............',
+                        hintText: '.............',
                         prefixIcon: const Icon(Icons.lock_outline),
                         fillColor: Colors.white,
                         filled: true,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 17),
                     InkWell(
                       onTap: () {},
                       child: Container(
-                        height: 50,
+                        height: 48,
+                        width: 300,
                         decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(12),
-                            shape: BoxShape.rectangle),
-                        width: double.infinity,
-                        child: const Center(
+                          color: const Color.fromRGBO(255, 174, 0, 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(
                           child: Text(
-                            'Sign in',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold,
+                            'Log in ',
+                            style: GoogleFonts.almarai(
+                              fontSize: 21,
+                              color: const Color.fromRGBO(74, 51, 0, 1),
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const Text(
+                    const SizedBox(height: 35),
+                    Text(
                       'or',
-                      style: TextStyle(
-                        fontSize: 20,
+                      style: GoogleFonts.almarai(
+                        fontSize: 18,
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.g_mobiledata,
-                      ),
-                      iconSize: 50,
-                      onPressed: () {},
-                      color: Colors.green,
-                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: SizedBox(
+                            height: 42,
+                            width: 38,
+                            child: Image.asset(
+                              'assets/Google.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: SizedBox(
+                            height: 48,
+                            width: 76,
+                            child: Image.asset(
+                              'assets/Apple.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: SizedBox(
+                            height: 40,
+                            width: 70,
+                            child: Image.asset(
+                              'assets/Facebook.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: 32),
             Row(
               children: [
-                const Text(
-                  "Don't have account? ",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Text(
+                  "Don't have an account?  ",
+                  style: GoogleFonts.almarai(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: const Color.fromRGBO(255, 255, 255, 0.8)),
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: const Text(
+                  onTap: () {
+                    context.go('/create-account');
+                  },
+                  child: Text(
                     'Sign up',
-                    style: TextStyle(
-                      color: Colors.amberAccent,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.almarai(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: const Color.fromRGBO(255, 174, 0, 1),
                     ),
                   ),
                 ),
               ],
             ),
-            InkWell(
-              onTap: () {},
-              child: const Text(
+            const SizedBox(height: 25),
+            TextButton(
+              onPressed: () {},
+              child: Text(
                 'Forgot your password?',
-                style: TextStyle(
-                  color: Colors.amberAccent,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.almarai(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  color: const Color.fromRGBO(255, 176, 0, 1),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

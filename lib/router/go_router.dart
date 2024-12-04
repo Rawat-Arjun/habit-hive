@@ -12,13 +12,13 @@ class MyRouter {
       builder: (context, state) => const OnboardingScreen(),
     ),
     GoRoute(
-      path: '/signin',
-      name: 'signin',
+      path: '/login',
+      name: 'login',
       builder: (context, state) => const LogInScreen(),
     ),
     GoRoute(
-      path: '/signup',
-      name: 'signup',
+      path: '/create-account',
+      name: 'create-account',
       builder: (context, state) => const CreateAccountScreen(),
     ),
     GoRoute(
