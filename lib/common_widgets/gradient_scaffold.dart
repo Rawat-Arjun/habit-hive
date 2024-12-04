@@ -8,18 +8,18 @@ class GradientScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 174, 0, 1),
+      backgroundColor: Colors.black,
       body: Container(
         height: double.infinity,
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             transform: GradientRotation(-math.pi / 5),
-            stops: [0, 0.15, 0.6, 1],
+            stops: [0.05, 0.1, 0.45, 1],
             colors: [
-              Color.fromRGBO(73, 50, 1, 1),
-              Color.fromRGBO(73, 50, 1, 0.2),
-              Color.fromRGBO(0, 0, 0, 1),
+              Color.fromRGBO(255, 174, 0, 0.5),
+              Color.fromRGBO(145, 99, 0, 0.65),
+              Color.fromRGBO(73, 50, 1, 0.8),
               Color.fromRGBO(0, 0, 0, 1),
             ],
           ),
