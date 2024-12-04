@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:habit_hive/auth_handler/user_auth.dart';
 import 'package:habit_hive/common_widgets/gradient_scaffold.dart';
 import 'package:habit_hive/common_widgets/gradient_text.dart';
+import 'package:habit_hive/screens/home/ui/home_screen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -23,14 +28,27 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   @override
+  // ignore: must_call_super
   void dispose() {
     super.dispose();
-    usernameController.dispose();
-    passwordController.dispose();
+  }
+
+  void clear() {
+    setState(() {
+      usernameController.clear();
+      passwordController.clear();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (UserAuth().isUserLoggedIn()) {
+      return HomeScreen(
+        isUserLoggedIn: () {
+          setState(() {});
+        },
+      );
+    }
     return GradientScaffold(
       child: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -79,7 +97,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 SizedBox(
                   height: 184,
                   width: 193,
-                  child: Image.network(
+                  child: Image.asset(
                     'assets/auth_pic.png',
                     fit: BoxFit.contain,
                   ),
@@ -88,8 +106,6 @@ class _LogInScreenState extends State<LogInScreen> {
             ),
             const SizedBox(height: 5),
             Container(
-              height: 332,
-              width: 376,
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(255, 174, 0, 0.3),
                 borderRadius: BorderRadius.circular(8),
@@ -130,22 +146,26 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                     const SizedBox(height: 17),
                     InkWell(
-                      onTap: () {},
+                      onTap: () async {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: usernameController.text,
+                            password: passwordController.text);
+                        clear();
+                      },
                       child: Container(
+                        alignment: Alignment.center,
                         height: 48,
                         width: 300,
                         decoration: BoxDecoration(
                           color: const Color.fromRGBO(255, 174, 0, 1),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(
-                          child: Text(
-                            'Log in ',
-                            style: GoogleFonts.almarai(
-                              fontSize: 21,
-                              color: const Color.fromRGBO(74, 51, 0, 1),
-                              fontWeight: FontWeight.w700,
-                            ),
+                        child: Text(
+                          'Log in ',
+                          style: GoogleFonts.almarai(
+                            fontSize: 21,
+                            color: const Color.fromRGBO(74, 51, 0, 1),
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
@@ -167,30 +187,32 @@ class _LogInScreenState extends State<LogInScreen> {
                         InkWell(
                           onTap: () {},
                           child: SizedBox(
-                            height: 42,
-                            width: 38,
+                            height: 40,
+                            width: 40,
                             child: Image.asset(
                               'assets/Google.png',
                               fit: BoxFit.contain,
                             ),
                           ),
                         ),
+                        Gap(24),
                         InkWell(
                           onTap: () {},
                           child: SizedBox(
-                            height: 48,
-                            width: 76,
+                            height: 40,
+                            width: 40,
                             child: Image.asset(
                               'assets/Apple.png',
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
+                        Gap(24),
                         InkWell(
                           onTap: () {},
                           child: SizedBox(
                             height: 40,
-                            width: 70,
+                            width: 40,
                             child: Image.asset(
                               'assets/Facebook.png',
                               fit: BoxFit.contain,

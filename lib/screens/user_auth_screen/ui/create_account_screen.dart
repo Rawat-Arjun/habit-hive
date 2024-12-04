@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:habit_hive/auth_handler/user_auth.dart';
 import 'package:habit_hive/common_widgets/gradient_scaffold.dart';
 import 'package:habit_hive/common_widgets/gradient_text.dart';
+import 'package:habit_hive/screens/home/ui/home_screen.dart';
 import 'package:habit_hive/screens/user_auth_screen/bloc/user_auth_bloc.dart';
-import 'package:habit_hive/screens/user_auth_screen/bloc/user_auth_events.dart';
 import 'package:habit_hive/screens/user_auth_screen/bloc/user_auth_state.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -19,12 +20,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   late final TextEditingController firstNameController;
   late final TextEditingController lastNameController;
   late final TextEditingController emailController;
+  late bool rememberMe;
 
   late final TextEditingController passwordController;
 
   @override
   void initState() {
     super.initState();
+    rememberMe = false;
+
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     emailController = TextEditingController();
@@ -43,7 +47,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     final createAccountBloc = context.read<SigninBloc>();
-    bool rememberMe = false;
+    if (UserAuth().isUserLoggedIn()) {
+      const HomeScreen();
+    }
     return GradientScaffold(
       child: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -247,19 +253,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           );
                         }
                         return InkWell(
-                          onTap: () async {
-                            try {
-                              createAccountBloc.add(
-                                CreateAccountEvent(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                ),
-                              );
-                              if (context.mounted) {
-                                context.go('/login');
-                              }
-                            } catch (e) {
-                              print(e.toString());
+                          onTap: () {
+                            UserAuth().createAccount(
+                                email: emailController.text,
+                                password: passwordController.text);
+                            if (context.mounted &&
+                                UserAuth().isUserLoggedIn()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Account created')));
+
+                              setState(() {});
                             }
                           },
                           child: Container(
