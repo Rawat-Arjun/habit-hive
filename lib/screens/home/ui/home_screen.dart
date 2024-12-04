@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:habit_hive/auth_handler/user_auth.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final VoidCallback? isUserLoggedIn;
+  const HomeScreen({super.key, this.isUserLoggedIn});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -10,6 +12,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: InkWell(
+            onTap: () {
+              UserAuth().logoutUser();
+              widget.isUserLoggedIn?.call();
+            },
+            child: Text('this is homepage')),
+      ),
+    );
   }
 }

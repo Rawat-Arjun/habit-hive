@@ -1,21 +1,69 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserAuth {
-  void loginUser({required String email, required String password}) async {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+  // Singleton pattern
+  UserAuth._internal();
+  static final UserAuth _instance = UserAuth._internal();
+  factory UserAuth() => _instance;
+
+  // Check if the user is logged in
+  bool isUserLoggedIn() {
+    return FirebaseAuth.instance.currentUser != null;
   }
 
-  void logoutUser() async {
-    await FirebaseAuth.instance.signOut();
+  // Login user
+  Future<void> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      // Handle specific errors like invalid email or wrong password
+      throw Exception('Login failed: ${e.message}');
+    } catch (e) {
+      throw Exception('An unexpected error occurred during login: $e');
+    }
   }
 
-  void createAccount({required String email, required String password}) async {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+  // Logout user
+  Future<void> logoutUser() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      throw Exception('Logout failed: $e');
+    }
   }
 
-  void resetPassword({required String email}) async {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  // Create a new account
+  Future<void> createAccount({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Account creation failed: ${e.message}');
+    } catch (e) {
+      throw Exception(
+          'An unexpected error occurred during account creation: $e');
+    }
+  }
+
+  // Reset password
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Password reset failed: ${e.message}');
+    } catch (e) {
+      throw Exception('An unexpected error occurred during password reset: $e');
+    }
   }
 }

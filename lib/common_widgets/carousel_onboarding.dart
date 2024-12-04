@@ -1,4 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class CarouselOnboarding extends StatefulWidget {
   const CarouselOnboarding({super.key});
@@ -8,61 +10,58 @@ class CarouselOnboarding extends StatefulWidget {
 }
 
 class _CarouselOnboardingState extends State<CarouselOnboarding> {
-  final _pageController = PageController(viewportFraction: 0.7);
-
   int currentIndex = 0;
 
   final List<String> carouselList = [
-    'https://as2.ftcdn.net/v2/jpg/02/05/35/45/1000_F_205354526_8Y8E2VbxvFJccm8T91qLKofTEIDbxgdv.jpg',
-    'https://as2.ftcdn.net/v2/jpg/02/05/35/45/1000_F_205354526_8Y8E2VbxvFJccm8T91qLKofTEIDbxgdv.jpg',
-    'https://as2.ftcdn.net/v2/jpg/02/05/35/45/1000_F_205354526_8Y8E2VbxvFJccm8T91qLKofTEIDbxgdv.jpg',
-    'https://as2.ftcdn.net/v2/jpg/02/05/35/45/1000_F_205354526_8Y8E2VbxvFJccm8T91qLKofTEIDbxgdv.jpg',
-    'https://as2.ftcdn.net/v2/jpg/02/05/35/45/1000_F_205354526_8Y8E2VbxvFJccm8T91qLKofTEIDbxgdv.jpg',
+    'assets/carousel_pic1.png',
+    'assets/carousel_pic2.png',
+    'assets/carousel_pic3.png',
+    'assets/carousel_pic4.png',
+    'assets/auth_pic.png',
   ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 150,
-          width: 250,
-          child: PageView.builder(
-            itemCount: carouselList.length,
-            controller: _pageController,
-            onPageChanged: (value) {
-              setState(() {
-                currentIndex = value;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                ),
-                child: Image.network(
+        CarouselSlider(
+            items: List.generate(
+              carouselList.length,
+              (index) {
+                return Image.asset(
                   carouselList[index],
-                  fit: BoxFit.contain,
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(
-          height: 40,
-        ),
+                  fit: BoxFit.cover,
+                  height: 160,
+                  width: 160,
+                );
+              },
+            ),
+            options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                viewportFraction: 0.3,
+                autoPlay: true,
+                enableInfiniteScroll: true,
+                enlargeFactor: 0.3,
+                aspectRatio: 1,
+                enlargeCenterPage: true,
+                height: 160)),
+        const Gap(116),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(carouselList.length, (index) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              height: 40.0,
-              width: 10.0,
+              height: 8.0,
+              width: 8.0,
               decoration: BoxDecoration(
-                color: currentIndex == index
-                    ? Colors.amberAccent
-                    : const Color.fromARGB(255, 124, 97, 16),
-                shape: BoxShape.circle,
-              ),
+                  color: currentIndex == index
+                      ? const Color.fromRGBO(255, 191, 53, 1)
+                      : const Color.fromARGB(255, 124, 97, 16),
+                  borderRadius: BorderRadius.circular(4)),
             );
           }),
         ),
